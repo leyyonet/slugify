@@ -1,6 +1,6 @@
 import {decoratorPool} from "@leyyo/core";
 import {IdPipe, PipeMetadata, PipeOpt, PipeOptExt, PipeParam, pipePool, PipeStored} from "@leyyo/pipe";
-import {CallParams} from "@leyyo/call";
+import {CallParams} from "@leyyo/http-call";
 import {FQN_PCK} from "../internal";
 import {Slugify} from "./slugify";
 

@@ -9,7 +9,7 @@ import {
     validatorPool,
     ValidatorStored
 } from "@leyyo/validator";
-import {CallParams} from "@leyyo/call";
+import {CallParams} from "@leyyo/http-call";
 import {FQN_PCK} from "../internal";
 import {Slugify} from "./slugify";
 

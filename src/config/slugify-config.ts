@@ -33,8 +33,8 @@ class SlugifyConfig implements SlugifyConfigLike {
 
     // region methods
     constructor() {
-        this._charMap = $repo.newMap($descriptor.sym(FQN_PCK, 'charMap'));
-        this._specials = $repo.newMap($descriptor.sym(FQN_PCK, 'specials'));
+        this._charMap = $repo.newMap(FQN_PCK, 'charMap');
+        this._specials = $repo.newMap(FQN_PCK, 'specials');
         this._buildRegexp();
         this.setSpecials(specialJson);
     }
