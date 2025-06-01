@@ -1,1 +1,1 @@
-export const FQN_PCK = 'leyyo.slugify';
+export const FQN = 'leyyo.slugify';

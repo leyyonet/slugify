@@ -2,12 +2,12 @@ import {Fqn} from "@leyyo/core";
 import {$descriptor, $is, $repo} from "@leyyo/common";
 import {$to, Dict} from "@leyyo/common";
 
-import {FQN_PCK} from "../internal";
+import {FQN} from "../internal";
 import {SlugifyConfigLike} from "./index.types";
 import * as mapJson from "../assets/map.json";
 import * as specialJson from '../assets/special.json';
 
-@Fqn(FQN_PCK)
+@Fqn(FQN)
 class SlugifyConfig implements SlugifyConfigLike {
     //region properties
     protected _charMap: Map<string, Array<string|RegExp>>;
@@ -33,8 +33,8 @@ class SlugifyConfig implements SlugifyConfigLike {
 
     // region methods
     constructor() {
-        this._charMap = $repo.newMap(FQN_PCK, 'charMap');
-        this._specials = $repo.newMap(FQN_PCK, 'specials');
+        this._charMap = $repo.newMap(FQN, 'charMap');
+        this._specials = $repo.newMap(FQN, 'specials');
         this._buildRegexp();
         this.setSpecials(specialJson);
     }

@@ -1,6 +1,6 @@
 import {Loader} from "@leyyo/injection";
 import {Fqn} from "@leyyo/core";
-import {FQN_PCK} from "./internal";
+import {FQN} from "./internal";
 import {slugifyConfig} from "./config";
 import {IsSlug, Slugify, ToSlug} from "./base";
 
@@ -8,5 +8,5 @@ import {IsSlug, Slugify, ToSlug} from "./base";
     slugifyConfig,
     Slugify, IsSlug, ToSlug
 )
-@Fqn(FQN_PCK)
+@Fqn(FQN)
 export class SlugifyLoader {}

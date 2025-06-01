@@ -1,11 +1,13 @@
+import {$to} from "@leyyo/common";
 import {Fqn} from "@leyyo/core";
-import {FQN_PCK} from "../internal";
-import {AssignType, CastApiDocResponse} from "@leyyo/cast";
-import {$to, Dict} from "@leyyo/common";
-import {slugifyConfig} from "../config";
 
-@Fqn(FQN_PCK)
-@AssignType('Slug', 'Slugified')
+import {FQN} from "../internal";
+import {slugifyConfig} from "../config";
+import {CastAlias, CastBasic, CastDocCallback, CastDocResponse} from "@leyyo/cast";
+
+@Fqn(FQN)
+@CastBasic()
+@CastAlias('Slug', 'Slugified')
 export class Slugify {
     protected static readonly PATTERN = /[^0-9a-z-]/;
     protected static readonly REPLACER_FIRST = /^\s+|\s+$/g;
@@ -15,6 +17,14 @@ export class Slugify {
     protected static readonly TRIM_START = /^-+/;
     protected static readonly TRIM_END = /-+$/;
     protected static readonly EMPTY = ['', '-'];
+
+    static canBe(value: unknown): boolean {
+        return typeof value === 'string';
+    }
+
+    static exact(value: unknown): boolean {
+        return typeof value === 'string' && this.PATTERN.test(value);
+    }
 
     static cast(value: unknown): string {
         let str = $to.text(value);
@@ -46,11 +56,8 @@ export class Slugify {
         ;
         return this.EMPTY.includes(str) ? str : undefined;
     }
-    static is(value: unknown): boolean {
-        return typeof value === 'string' && !this.PATTERN.test(value);
-    }
 
-    static doc(_target: unknown, _property: PropertyKey, _openApi: Dict): CastApiDocResponse {
-        return { type: 'string', format: 'all-caps' };
+    static doc(openApi: CastDocCallback): CastDocResponse {
+        return openApi(this, { type: 'string', format: 'slugify' });
     }
 }

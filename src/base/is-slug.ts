@@ -10,7 +10,7 @@ import {
     ValidatorStored
 } from "@leyyo/validator";
 import {CallParams} from "@leyyo/http-call";
-import {FQN_PCK} from "../internal";
+import {FQN} from "../internal";
 import {Slugify} from "./slugify";
 
 type H = Placeholder;
@@ -35,7 +35,7 @@ export function IsSlug(opt?: ValidatorOpt | ValidatorOptExt): PropertyDecorator 
 }
 
 const deco = decoratorPool.newId<ValidatorStored<P>, ValidatorMetadata<P, H, E>, ValidatorParam>(IsSlug)
-    .fqn(FQN_PCK)
+    .fqn(FQN)
     .targets('field', 'parameter')
     .keywords(IdValidator)
     .keywords('ph:field', 'ph:deco', 'ph:data')
@@ -49,7 +49,7 @@ const deco = decoratorPool.newId<ValidatorStored<P>, ValidatorMetadata<P, H, E>,
         is: (data) => typeof data === 'string',
         validates: (data, current) => {
 
-            if (!Slugify.is(data)) {
+            if (!Slugify.exact(data)) {
                 return current.failed({});
             }
 

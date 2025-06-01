@@ -1,7 +1,8 @@
 import {decoratorPool} from "@leyyo/core";
 import {IdPipe, PipeMetadata, PipeOpt, PipeOptExt, PipeParam, pipePool, PipeStored} from "@leyyo/pipe";
 import {CallParams} from "@leyyo/http-call";
-import {FQN_PCK} from "../internal";
+
+import {FQN} from "../internal";
 import {Slugify} from "./slugify";
 
 type P = CallParams;
@@ -18,7 +19,7 @@ export function ToSlug(opt?: PipeOpt | PipeOptExt): PropertyDecorator | Paramete
 
 
 const deco = decoratorPool.newId<PipeStored<P>, PipeMetadata<P, E>, PipeParam>(ToSlug)
-    .fqn(FQN_PCK)
+    .fqn(FQN)
     .targets('field', 'parameter', 'class', 'method')
     .keywords(IdPipe)
     .processor((ins, p) => {
