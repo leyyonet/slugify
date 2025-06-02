@@ -1,4 +1,4 @@
-import {$to} from "@leyyo/common";
+import {$is, $to} from "@leyyo/common";
 import {Fqn} from "@leyyo/core";
 
 import {FQN} from "../internal";
@@ -7,23 +7,16 @@ import {CastAlias, CastBasic, CastDocCallback, CastDocResponse} from "@leyyo/cas
 
 @Fqn(FQN)
 @CastBasic()
-@CastAlias('Slug', 'Slugified')
+@CastAlias('Slug')
 export class Slugify {
-    protected static readonly PATTERN = /[^0-9a-z-]/;
-    protected static readonly REPLACER_FIRST = /^\s+|\s+$/g;
-    protected static readonly REPLACER_INVALID = /[^a-z0-9-]/gi;
-    protected static readonly REPLACER_WHITESPACE = /\s+/g;
-    protected static readonly REPLACER_COLLAPSE = /-+/g;
-    protected static readonly TRIM_START = /^-+/;
-    protected static readonly TRIM_END = /-+$/;
-    protected static readonly EMPTY = ['', '-'];
+    private static readonly EMPTY = ['', '-'];
 
     static canBe(value: unknown): boolean {
         return typeof value === 'string';
     }
 
     static exact(value: unknown): boolean {
-        return typeof value === 'string' && this.PATTERN.test(value);
+        return $is.text(value) && /^[a-z0-9]*(-[a-z0-9]+)*$/g.test(value as string);
     }
 
     static cast(value: unknown): string {
@@ -31,27 +24,38 @@ export class Slugify {
         if (!str) {
             return undefined;
         }
-        str = str.replace(this.REPLACER_FIRST, '').trim();
+        str = str.replace(/[.,/#!$%^&*;:{}=_`~()]/g, '');
         if (str === '') {
             return undefined;
         }
+        if (this.exact(str)) {
+            return str;
+        }
+
+        str = str.replace(/^\s+|\s+$/g, '').trim();
+        if (str === '') {
+            return undefined;
+        }
+/*
         for (const [k, v] of slugifyConfig.specials.entries()) {
             if (str.indexOf(k) >= 0) {
                 str = str.replace(k, v as string);
             }
         }
+*/
+        const aa = slugifyConfig.charMap;
         // remove accents, swap ñ for n, etc
         for (const [key, accents] of slugifyConfig.charMap.entries()) {
             accents.forEach((accent) => {
                 str = str.replace(accent, key);
-            })
+            });
         }
         str = str
-            .replace(this.REPLACER_INVALID, '-') // remove invalid chars
-            .replace(this.REPLACER_WHITESPACE, '-') // collapse whitespace and replace by -
-            .replace(this.TRIM_START, '') // trim - from start of text
-            .replace(this.TRIM_END, '') // trim - from end of text
-            .replace(this.REPLACER_COLLAPSE, '-') // collapse dashes
+            .replace(/[^a-z0-9-]/gi, '-') // remove invalid chars
+            .replace(/\s+/g, '-') // collapse whitespace and replace by -
+            .replace(/^-+/, '') // trim - from start of text
+            .replace(/-+$/, '') // trim - from end of text
+            .replace(/-+/g, '-') // collapse dashes
             .toLowerCase()
         ;
         return this.EMPTY.includes(str) ? str : undefined;
@@ -61,3 +65,4 @@ export class Slugify {
         return openApi(this, { type: 'string', format: 'slugify' });
     }
 }
+export const Slug = Slugify;
