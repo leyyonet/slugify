@@ -13,7 +13,7 @@ export function ToSlug(opt?: PipeOpt): ParameterDecorator;
 export function ToSlug(opt?: PipeOptExt): ClassDecorator;
 export function ToSlug(opt?: PipeOptExt): MethodDecorator;
 export function ToSlug(opt?: PipeOpt | PipeOptExt): PropertyDecorator | ParameterDecorator | MethodDecorator | ClassDecorator {
-    return (clazz: object, property?: PropertyKey, index?: number | TypedPropertyDescriptor<any>) =>
+    return (clazz: object, property?: PropertyKey, index?: number | TypedPropertyDescriptor<unknown>) =>
         deco.process([clazz, property, index], {opt});
 }
 
