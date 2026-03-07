@@ -1,6 +1,6 @@
 {
   "name": "@leyyo/slugify",
-  "version": "1.2.1",
+  "version": "4.0.2",
   "description": "Slugifies given string",
   "keywords": [
     "slugify",
@@ -20,40 +20,53 @@
     "email": "mustafayelmer@gmail.com"
   },
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "type": "module",
   "scripts": {
-    "clear": "rimraf dist",
+    "clear:dist": "rimraf dist && rimraf coverage",
+    "clear:rm": "rimraf package-lock.json && rimraf node_modules",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "format": "prettier --check \"{src,test}/**/*.{ts,tsx,js}\"",
+    "format:check": "prettier --check \"{src,test}/**/*.{ts,tsx,js}\"",
     "format:force": "prettier --write \"{src,test}/**/*.{ts,tsx,js}\"",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "asset": "node -r ts-node/register commands/assets.js",
-    "build": "npm run clear && tsc && npm run asset",
-    "publish:public": "npm run lint && npm run format:force && npm run test && npm run build && npm publish --access=public"
+    "cmd:assets": "node -r ts-node/register commands/assets.js",
+    "cmd:minify": "node -r ts-node/register commands/minify.js",
+    "build": "npm run clear:dist && tsc && npm run cmd:minify && npm run cmd:assets",
+    "publish:before": "npm run lint && npm run format:check && npm run test && npm run build",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "release:verdaccio": "npm run publish:before && changeset publish --registry http://localhost:4873",
+    "release:npm": "npm run publish:before && changeset publish --registry https://registry.npmjs.org"
   },
   "files": [
     "dist/*"
   ],
   "license": "ISC",
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
     "@eslint/js": "^9.0.0",
     "@types/node": "^24.2.1",
     "@vitest/coverage-istanbul": "^4.0.18",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-n": "^17.24.0",
+    "javascript-obfuscator": "^5.3.0",
     "prettier": "^3.8.1",
     "rimraf": "^6.0.1",
+    "terser": "^5.46.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.0.0",
     "vitest": "^4.0.18"
   },
   "dependencies": {
-    "@leyyo/common": "^1.3.21",
-    "@leyyo/type": "^1.3.10"
+    "@leyyo/common": "4.0.5",
+    "@leyyo/type": "4.0.4"
   }
 }

@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import path from "node:path";
 import fs from "fs";
 import { DeveloperError, isEmpty, isObj, isText, repoCommon, testCase } from "@leyyo/common";
-import { FQN } from "./internal.js";
+import { PCK } from "./internal.js";
 import { SlugifyCommonLike, SlugifyMap, SlugifySpecials } from "./index.types.js";
 
 class SlugifyCommon implements SlugifyCommonLike {
@@ -50,8 +50,8 @@ class SlugifyCommon implements SlugifyCommonLike {
 
   // region methods
   constructor() {
-    this._charMap = repoCommon.newMap(`${FQN}.charMap`);
-    this._specials = repoCommon.newMap(`${FQN}.specials`);
+    this._charMap = repoCommon.newMap(`${PCK}.charMap`);
+    this._specials = repoCommon.newMap(`${PCK}.specials`);
     this._loadCharMap();
     this._loadSpecials();
   }
@@ -64,7 +64,7 @@ class SlugifyCommon implements SlugifyCommonLike {
         if (isEmpty(v)) {
           this._specials.set(k, "");
         } else if (!isText(v)) {
-          throw new DeveloperError("Invalid special character", testCase(FQN, 100));
+          throw new DeveloperError("Invalid special character", testCase(PCK, 100));
         }
         this._specials.set(k, v as string);
       }
