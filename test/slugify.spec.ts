@@ -1,9 +1,8 @@
 import { assert, beforeAll, describe, it } from "vitest";
 import { isSlug, toSlug } from "../src/index.js";
+import { initTest } from "@leyyo/common";
 
-beforeAll(() => {
-  global.leyyo_testing = true;
-});
+beforeAll(() => initTest());
 
 interface TestItem {
   info: string;

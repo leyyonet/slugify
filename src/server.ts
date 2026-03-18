@@ -1,4 +1,4 @@
-import { toSlug } from "./to-slug.js";
+import { toSlug } from "./items/to-slug.js";
 
 interface TestItem {
   input: string;

@@ -3,8 +3,8 @@ import { fileURLToPath } from "url";
 import path from "node:path";
 import fs from "fs";
 import { DeveloperError, isEmpty, isObj, isText, repoCommon, testCase } from "@leyyo/common";
-import { PCK } from "./internal.js";
-import { SlugifyCommonLike, SlugifyMap, SlugifySpecials } from "./index.types.js";
+import { PCK } from "../internal.js";
+import { SlugifyCommonLike, SlugifyMap, SlugifySpecials } from "../type.js";
 
 class SlugifyCommon implements SlugifyCommonLike {
   //region properties
@@ -14,7 +14,7 @@ class SlugifyCommon implements SlugifyCommonLike {
 
   //region private
   protected _readFile<T>(name: string) {
-    const __dirname = dirname(fileURLToPath(import.meta.url));
+    const __dirname = dirname(dirname(fileURLToPath(import.meta.url)));
     const fullPath = path.normalize(`${__dirname}/assets/${name}.json`);
     if (fs.existsSync(fullPath)) {
       return JSON.parse(fs.readFileSync(fullPath, "utf8")) as T;
@@ -64,7 +64,7 @@ class SlugifyCommon implements SlugifyCommonLike {
         if (isEmpty(v)) {
           this._specials.set(k, "");
         } else if (!isText(v)) {
-          throw new DeveloperError("Invalid special character", testCase(PCK, 100));
+          throw new DeveloperError("Invalid special character", testCase(PCK, "invalid-specials"));
         }
         this._specials.set(k, v as string);
       }

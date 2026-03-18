@@ -1,10 +1,12 @@
-import {definePredictor, errorPool, leyyoCommonPredictor} from "@leyyo/common";
+import { definePredictor, errorPool } from "@leyyo/common";
 import { PCK } from "../internal.js";
-import {leyyoTypePredictor} from "@leyyo/type";
 
 // noinspection JSUnusedGlobalSymbols
-export const leyyoSlugifyForetell = definePredictor(PCK)
-  .dependency(leyyoCommonPredictor, leyyoTypePredictor)
+export const leyyoSlugifyPredictor = definePredictor(PCK)
+  .dependency(
+    () => import("@leyyo/common").then((m) => m.leyyoCommonPredictor),
+    () => import("@leyyo/type").then((m) => m.leyyoTypePredictor),
+  )
   //errors
   .add(() =>
     errorPool.lazy(

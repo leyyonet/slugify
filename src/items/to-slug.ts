@@ -1,6 +1,7 @@
 import { slugifyCommon } from "./slugify-common.js";
-import { ToOpt, toTextOf } from "@leyyo/type";
+import { ToOpt, toTextOf, typeHelper } from "@leyyo/type";
 import { optCheck, OptFn } from "@leyyo/common";
+import { InvalidSlugError } from "../error/index.js";
 
 // region internal
 /**
@@ -104,10 +105,11 @@ function _lambda(str: string, _opt?: ToOpt): string {
  * Convert value as slug
  *
  * @param {any} value
- * @param {ToOpt} opt - options
+ * @param {ToOpt} options - options
  * @return {string} - slug text
  * */
-export function toSlug(value: unknown, opt?: ToOpt | OptFn): string {
-  const o = optCheck(opt);
-  return toTextOf(value, (v) => _lambda(v, o), o);
+export function toSlug(value: unknown, options?: ToOpt | OptFn): string {
+  const o = optCheck<ToOpt>(options);
+  typeHelper.errorClass(o, InvalidSlugError);
+  return toTextOf(value, "slug", (v) => _lambda(v, o), o);
 }
